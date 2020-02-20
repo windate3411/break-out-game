@@ -129,11 +129,16 @@ function moveBall() {
         ) {
           ball.dy *= -1
           brick.visible = false
-          score++
+          increaseScore()
         }
       }
     })
   })
+  // end game
+  if (ball.y + ball.size > canvas.height) {
+    showAllBricks()
+    score = 0
+  }
 }
 
 // draw everything 
@@ -170,6 +175,23 @@ document.addEventListener('keyup', keyup)
 rulesBtn.addEventListener('click', () => {
   rules.classList.add('show')
 })
+
+// increase score
+function increaseScore() {
+  score++
+  if (score === brickRow * brickColumn) {
+    showAllBricks()
+  }
+}
+
+// showAllBricks
+function showAllBricks() {
+  bricks.forEach(column => {
+    column.forEach(brick => {
+      brick.visible = true
+    })
+  })
+}
 
 closeBtn.addEventListener('click', () => {
   rules.classList.remove('show')
