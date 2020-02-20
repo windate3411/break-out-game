@@ -7,6 +7,8 @@ const ctx = canvas.getContext('2d')
 
 // init variables
 let score = 0
+const brickRow = 9
+const brickColumn = 5
 
 // Create ball props
 const ball = {
@@ -51,11 +53,45 @@ function drawScore() {
   ctx.fillText(`Score: ${score}`, canvas.width - 100, 30)
 }
 
+// create bricks
+const brickInfo = {
+  w: 70,
+  h: 20,
+  padding: 10,
+  offsetX: 45,
+  offsetY: 60,
+  visible: true
+}
+
+const bricks = []
+for (let i = 0; i < brickRow; i++) {
+  bricks[i] = []
+  for (let j = 0; j < brickColumn; j++) {
+    const x = i * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX
+    const y = j * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY
+    bricks[i][j] = { x, y, ...brickInfo }
+  }
+}
+
+// draw bricks
+function drawBricks() {
+  bricks.forEach(column => {
+    column.forEach(brick => {
+      ctx.beginPath()
+      ctx.rect(brick.x, brick.y, brick.w, brick.h)
+      ctx.fillStyle = brick.visible ? '#0095dd' : 'transparent'
+      ctx.fill()
+      ctx.closePath()
+    })
+  })
+}
+
 // draw everything 
 function draw() {
   drawPaddle()
   drawBall()
   drawScore()
+  drawBricks()
 }
 
 // Rules and Close event listener
