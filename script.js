@@ -5,6 +5,8 @@ const rules = document.getElementById('rules')
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
+// init variables
+let score = 0
 
 // Create ball props
 const ball = {
@@ -43,10 +45,17 @@ function drawBall() {
   ctx.closePath()
 }
 
+// draw score on canvas
+function drawScore() {
+  ctx.font = '20px Arial'
+  ctx.fillText(`Score: ${score}`, canvas.width - 100, 30)
+}
+
 // draw everything 
 function draw() {
   drawPaddle()
   drawBall()
+  drawScore()
 }
 
 // Rules and Close event listener
