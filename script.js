@@ -86,13 +86,47 @@ function drawBricks() {
   })
 }
 
+// move paddle
+function movePaddle() {
+  paddle.x += paddle.dx
+
+  // wall detection
+  if (paddle.x + paddle.w > canvas.width) {
+    paddle.x = canvas.width - paddle.w
+  } else if (paddle.x < 0) {
+    paddle.x = 0
+  }
+}
+
 // draw everything 
 function draw() {
+  // clear before draw new content
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+
   drawPaddle()
   drawBall()
   drawScore()
   drawBricks()
 }
+
+// keyboard events
+function keydown(e) {
+  if (e.key === 'right' || e.key === 'ArrowRight') {
+    paddle.dx = paddle.speed
+  } else if (e.key === 'left' || e.key === 'ArrowLeft') {
+    paddle.dx = -paddle.speed
+  }
+}
+
+function keyup(e) {
+  if (e.key === 'right' || e.key === 'ArrowRight' || e.key === 'left' || e.key === 'ArrowLeft') {
+    paddle.dx = 0
+  }
+}
+
+// keyboard events hanlder
+document.addEventListener('keydown', keydown)
+document.addEventListener('keyup', keyup)
 
 // Rules and Close event listener
 rulesBtn.addEventListener('click', () => {
@@ -103,4 +137,11 @@ closeBtn.addEventListener('click', () => {
   rules.classList.remove('show')
 })
 
-draw()
+// update canvas
+function update() {
+  movePaddle()
+  draw()
+  requestAnimationFrame(update)
+}
+
+update() 
